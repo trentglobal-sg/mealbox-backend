@@ -16,7 +16,7 @@ Videos of the recipe
 Images of the end product
 Images of the ingredient
 
-Collection 2:
+(Recipes) Collection 2:
 Name of recipe
 Ingredient
 Cuisine type
@@ -24,9 +24,12 @@ Tags
 Instructions 
 Ratings
 Comments
+Difficulty (1-2-3 Stars)
 
 
-Collection 3:
-Users 
-Comments
-Recipes
+(Comment) Collection 3:
+_id : Comment id (ObjectId)
+Comments 
+Reviewer Name (username)
+user id
+Recipes ID
