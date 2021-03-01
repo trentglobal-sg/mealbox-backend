@@ -33,7 +33,8 @@ async function main() {
     app.post("/comments", async (req, res) => {
         let comments = req.body.comments
         let username = req.body.username
-        let recipes_id = req.body.recipes_id
+        let recipe_id = req.body.recipe_id
+        let recipe_name = req.body.recipe_name
         let user_id = req.body.user_id
 
         try {
@@ -41,7 +42,8 @@ async function main() {
                 username: username,
                 user_id: user_id,
                 comments: comments,
-                recipes_id: recipes_id,
+                recipe_name: recipe_name,
+                recipe_id: recipe_id,
             })
             res.status(200)
             res.send(results)
@@ -79,6 +81,6 @@ main()
 
 
 // Route begins here
-app.listen(3000, () => {
+app.listen(3001, () => {
     console.log("server has started")
 })
