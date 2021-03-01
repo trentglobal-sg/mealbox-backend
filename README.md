@@ -11,7 +11,7 @@ This application serve the following purpose:
 ## Content Information
 ### Information required on the recipes to recreate
 ```
-Collection 1:
+(Resources) Collection 1:
 Videos of the recipe
 Images of the end product
 Images of the ingredient

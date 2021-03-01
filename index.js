@@ -14,12 +14,13 @@ app.use(cors());
 async function main() {
     let db = await MongoUtil.connect(mongoUrl, "tgc-11")
 
+    // For "comments" collection
     // Get - Fetch information
-    app.get("/task", async (req, res) => {
+    app.get("/comments", async (req, res) => {
         try {
-            let tasks = await db.collection("tasks").find().toArray();
+            let comments = await db.collection("comments").find().toArray();
             res.status(200)
-            res.send(tasks)
+            res.send(comments)
         } catch (e) {
             res.status(500)
             res.send({
@@ -28,27 +29,6 @@ async function main() {
         }
     })
 
-    // Post - Add new document
-    app.post("/task", async (req, res) => {
-        let title = req.body.title
-        let done = req.body.done
-
-        try {
-            let results = await db.collection("tasks").insertOne({
-                title: title,
-                done: done
-            })
-            res.status(200)
-            res.send(results)
-        } catch (e) {
-            res.status(500)
-            res.send({
-                "Message": "Unable to insert"
-            });
-            console.log(e)
-        }
-    })
-    
     // Post - Add new document
     app.post("/comments", async (req, res) => {
         let comments = req.body.comments
@@ -61,7 +41,7 @@ async function main() {
                 username: username,
                 user_id: user_id,
                 comments: comments,
-                recipes_id : recipes_id,
+                recipes_id: recipes_id,
             })
             res.status(200)
             res.send(results)
@@ -73,6 +53,26 @@ async function main() {
             console.log(e)
         }
     })
+
+    // Delete document
+    app.delete("/comments/:id", async (req, res) => {
+        try{
+            await db.collection("comments").deleteOne({
+                _id: ObjectId(req.params.id)
+            })
+            res.status(200);
+            res.send({
+                "Message" : "Deleted request"
+            })
+
+        } catch (e){
+            res.status(500)
+            res.send({
+                "Message" : "Unable to delete request"
+            })
+        }
+    })
+
 }
 
 main()
