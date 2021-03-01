@@ -14,6 +14,27 @@ app.use(cors());
 async function main(){
     let db = await MongoUtil.connect(mongoUrl, "tgc-11")
     console.log("Database connected")
+
+    // Post - Add new document
+    app.post("/task", async (req,res)=>{
+        let title = req.body.title
+        let done = req.body.done
+
+        try {
+            let results = await db.collection("tasks").insertOne({
+                title : title,
+                done: done
+            })
+            res.status(200)
+            res.send(results)
+        } catch (e) {
+            res.status (500)
+            res.send({
+                "Message" : "Unable to insert"
+            });
+            console.log(e)
+        }
+    })
 }
 
 main()
