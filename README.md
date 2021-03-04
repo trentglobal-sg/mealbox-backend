@@ -20,14 +20,14 @@ Recipe Name
 
 (Recipes) Collection 2:
 Recipe Name (string)
-Short Description (string)
+Short Description (string) (No more than 100 characters)
 Ingredients Required (Array of strings)
 Cuisine type (String) (Drop down)
 Tags (Array) (Multiple Select)
 Instructions (Array of strings) 
 Comments (Array of object)
 Difficulty (string) (Radio)
-Cooking Time (Integer) 
+Cooking Time "(String) 
 Preperation Time (Integer)
 Serving (Integer)
 
