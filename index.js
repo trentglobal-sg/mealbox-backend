@@ -15,7 +15,7 @@ async function main() {
     let db = await MongoUtil.connect(mongoUrl, "tgc-11")
 
     // For "comments" collection
-    // Get - Fetch information
+    // Get - Fetch comment
     app.get("/comments", async (req, res) => {
         try {
             let comments = await db.collection("comments").find().toArray();
@@ -29,7 +29,7 @@ async function main() {
         }
     })
 
-    // Post - Add new document
+    // Post - Add new comment
     app.post("/comments", async (req, res) => {
         let comments = req.body.comments
         let username = req.body.username
@@ -56,26 +56,55 @@ async function main() {
         }
     })
 
-    // Delete document
+    // Put comment
+    app.put("/comments", async (req, res) => {
+        try {
+            await db.collection("comments").updateOne(
+                {
+                    _id: ObjectId(req.body._id)
+                },
+                {
+                    '$set': {
+                        "username": req.body.username,
+                        "user_id": req.body.user_id,
+                        "comments": req.body.comments,
+                        "recipe_name": req.body.recipe_name,
+                        "recipe_id": req.body.recipe_id,
+                    }
+                });
+            res.status(200);
+            res.send({
+                'message': 'OK'
+            })
+        } catch (e) {
+            res.status(500);
+            res.send({
+                'message': "Unable to update"
+            })
+            console.log(e);
+        }
+    });
+    // Delete comment
     app.delete("/comments/:id", async (req, res) => {
-        try{
+        try {
             await db.collection("comments").deleteOne({
                 _id: ObjectId(req.params.id)
             })
             res.status(200);
             res.send({
-                "Message" : "Deleted request"
+                "Message": "Deleted request"
             })
 
-        } catch (e){
+        } catch (e) {
             res.status(500)
             res.send({
-                "Message" : "Unable to delete request"
+                "Message": "Unable to delete request"
             })
         }
     })
 
 
+    // For "recipes" collection
     // Get - Fetch Recipes
     app.get("/recipe", async (req, res) => {
         try {
@@ -93,7 +122,7 @@ async function main() {
     // Post A Recipe URL 
     // This URL is given to selected users for them to upload recipe into the system
     // Limitation due to account-login authentication not implemented into system yet
-    
+
     app.post("/recipe", async (req, res) => {
         let recipe_name = req.body.recipe_name
         let description = req.body.description
@@ -104,7 +133,7 @@ async function main() {
         let difficulty = req.body.difficulty
         let cooking_time = req.body.cooking_time
         let preparation_time = req.body.preparation_time
-        let serving = req.body.serving     
+        let serving = req.body.serving
 
         try {
             let results = await db.collection("recipes").insertOne({
