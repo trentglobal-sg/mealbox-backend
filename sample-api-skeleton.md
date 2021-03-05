@@ -4,17 +4,34 @@ User will only be allow to post comment to the recipe after they click on the "c
 `POST` Add a new comment using JSON format.
 ```
 {
-    "comments": "string"
-    "username": "string"
-    "recipe_name": "string"
+    "comments": string
+    "username": string
+    "recipe_name": string
     "recipe_id": ObjectID()
-    "user_id": "integer"
+    "user_id": integer
 }
 ```
 
 To post recipe
 
 `POST` Add a new recipe using JSON format.
+```
+{
+"recipe_name": string
+  "description": string  
+  "ingredients": array of strings
+  "cuisine_type": string
+  "tags": array of strings
+  "instructions": array of strings
+  "difficulty": string
+  "cooking_time": string
+  "preparation_time" : string
+  "serving" : integer
+  "created_by": string
+}
+```
+
+Sample document
 ```
 {
 "recipe_name": "Fettuccini Carbonara",

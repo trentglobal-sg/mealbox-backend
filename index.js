@@ -101,7 +101,7 @@ async function main() {
 
     // For "recipes" collection
     // Get - Fetch Recipes
-    app.get("/recipe", async (req, res) => {
+    app.get("/recipes", async (req, res) => {
         try {
             let comments = await db.collection("recipes").find().toArray();
             res.status(200)
@@ -118,7 +118,7 @@ async function main() {
     // This URL is given to selected users for them to upload recipe into the system
     // Limitation due to account-login authentication not implemented into system yet
 
-    app.post("/recipe", async (req, res) => {
+    app.post("/recipes", async (req, res) => {
         try {
             let results = await db.collection("recipes").insertOne({
                 recipe_name: req.body.recipe_name,
@@ -146,7 +146,7 @@ async function main() {
     })
 
     // Delete for recipes
-    app.delete("/recipe/:id", async (req, res) => {
+    app.delete("/recipes/:id", async (req, res) => {
         try {
             await db.collection("recipes").deleteOne({
                 _id: ObjectId(req.params.id)
