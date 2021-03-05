@@ -31,19 +31,14 @@ async function main() {
 
     // Post - Add new comment
     app.post("/comments", async (req, res) => {
-        let comments = req.body.comments
-        let username = req.body.username
-        let recipe_id = req.body.recipe_id
-        let recipe_name = req.body.recipe_name
-        let user_id = req.body.user_id
-
         try {
             let results = await db.collection("comments").insertOne({
-                username: username,
-                user_id: user_id,
-                comments: comments,
-                recipe_name: recipe_name,
-                recipe_id: recipe_id,
+                username: req.body.username,
+                user_id: req.body.user_id,
+                comments: req.body.comments,
+                recipe_name: req.body.recipe_name,
+                recipe_id: req.body.recipe_id,
+                last_updated: new Date()
             })
             res.status(200)
             res.send(results)
