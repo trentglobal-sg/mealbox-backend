@@ -26,7 +26,7 @@ Cuisine type (String) (Drop down)
 Tags (Array) (Multiple Select)
 Instructions (Array of strings) 
 Comments (Array of object)
-Difficulty (string) (Radio)
+Difficulty (string) (Radio) 
 Cooking Time "(String) 
 Preperation Time (Integer)
 Serving (Integer)
@@ -57,6 +57,9 @@ Recipe Name
         * Short Description
         * Difficulty
         * Cuisine Type 
+        * Created By
+        * Date
+        * Show last updated if any
 * Filtering Options 
      * By Cuisine type
      * By Difficulty

@@ -119,29 +119,20 @@ async function main() {
     // Limitation due to account-login authentication not implemented into system yet
 
     app.post("/recipe", async (req, res) => {
-        let recipe_name = req.body.recipe_name
-        let description = req.body.description
-        let ingredients = req.body.ingredients
-        let cuisine_type = req.body.cuisine_type
-        let tags = req.body.tags
-        let instructions = req.body.instructions
-        let difficulty = req.body.difficulty
-        let cooking_time = req.body.cooking_time
-        let preparation_time = req.body.preparation_time
-        let serving = req.body.serving
-
         try {
             let results = await db.collection("recipes").insertOne({
-                recipe_name: recipe_name,
-                description: description,
-                ingredients: ingredients,
-                cuisine_type: cuisine_type,
-                tags: tags,
-                instructions: instructions,
-                difficulty: difficulty,
-                cooking_time: cooking_time,
-                preparation_time: preparation_time,
-                serving: serving
+                recipe_name: req.body.recipe_name,
+                description: req.body.description,
+                ingredients:  req.body.ingredients,
+                cuisine_type: req.body.cuisine_type,
+                tags: req.body.tags,
+                instructions: req.body.instructions,
+                difficulty: req.body.difficulty,
+                cooking_time: req.body.cooking_time,
+                preparation_time: req.body.preparation_time,
+                serving: req.body.serving,
+                created_by: req.body.created_by,
+                created_on: new Date()
             })
             res.status(200)
             res.send(results)
@@ -151,6 +142,25 @@ async function main() {
                 "Message": "Unable to insert recipe"
             });
             console.log(e)
+        }
+    })
+
+    // Delete for recipes
+    app.delete("/recipe/:id", async (req, res) => {
+        try {
+            await db.collection("recipes").deleteOne({
+                _id: ObjectId(req.params.id)
+            })
+            res.status(200);
+            res.send({
+                "Message": "Deleted request"
+            })
+
+        } catch (e) {
+            res.status(500)
+            res.send({
+                "Message": "Unable to delete request"
+            })
         }
     })
 }
