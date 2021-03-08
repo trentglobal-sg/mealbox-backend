@@ -132,7 +132,11 @@ async function main() {
                 preparation_time: req.body.preparation_time,
                 serving: req.body.serving,
                 created_by: req.body.created_by,
-                created_on: new Date()
+                created_on: new Date(),
+                resource: {
+                    _id: ObjectId(req.body.resource._id),
+                    img_url: req.body.resource.img_url
+                }
             })
             res.status(200)
             res.send(results)
