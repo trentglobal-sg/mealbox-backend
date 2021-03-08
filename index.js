@@ -103,9 +103,9 @@ async function main() {
     // Get - Fetch Recipes
     app.get("/recipes", async (req, res) => {
         try {
-            let comments = await db.collection("recipes").find().toArray();
+            let recipes = await db.collection("recipes").find().toArray();
             res.status(200)
-            res.send(comments)
+            res.send(recipes)
         } catch (e) {
             res.status(500)
             res.send({
@@ -123,7 +123,7 @@ async function main() {
             let results = await db.collection("recipes").insertOne({
                 recipe_name: req.body.recipe_name,
                 description: req.body.description,
-                ingredients:  req.body.ingredients,
+                ingredients: req.body.ingredients,
                 cuisine_type: req.body.cuisine_type,
                 tags: req.body.tags,
                 instructions: req.body.instructions,
@@ -163,12 +163,64 @@ async function main() {
             })
         }
     })
+
+    // For "resource" collection
+    // Get - Fetch resources
+    app.get("/resources", async (req, res) => {
+        try {
+            let resources = await db.collection("resources").find().toArray();
+            res.status(200)
+            res.send(resources)
+        } catch (e) {
+            res.status(500)
+            res.send({
+                "Message": "Unable to get resource"
+            })
+        }
+    })
+
+    // Post - Add new resource
+    app.post("/resources", async (req, res) => {
+        try {
+            let results = await db.collection("resources").insertOne({
+                img_url: req.body.img_url,
+            })
+            res.status(200)
+            res.send(results)
+        } catch (e) {
+            res.status(500)
+            res.send({
+                "Message": "Unable to insert resource"
+            });
+            console.log(e)
+        }
+    })
+
+    // Delete for resources
+    app.delete("/resources/:id", async (req, res) => {
+        try {
+            await db.collection("resources").deleteOne({
+                _id: ObjectId(req.params.id)
+            })
+            res.status(200);
+            res.send({
+                "Message": "Deleted request"
+            })
+
+        } catch (e) {
+            res.status(500)
+            res.send({
+                "Message": "Unable to delete request"
+            })
+        }
+    })
 }
+
 
 main()
 
 
 // Route begins here
 app.listen(3001, () => {
-    console.log("server has started")
-})
+        console.log("server has started")
+    })
