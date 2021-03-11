@@ -33,11 +33,9 @@ async function main() {
     app.post("/comments", async (req, res) => {
         try {
             let results = await db.collection("comments").insertOne({
+                recipe_id: ObjectId(req.body.recipe_id),
                 username: req.body.username,
-                user_id: req.body.user_id,
                 comments: req.body.comments,
-                recipe_name: req.body.recipe_name,
-                recipe_id: req.body.recipe_id,
                 last_updated: new Date()
             })
             res.status(200)
@@ -60,11 +58,10 @@ async function main() {
                 },
                 {
                     '$set': {
-                        "username": req.body.username,
-                        "user_id": req.body.user_id,
-                        "comments": req.body.comments,
-                        "recipe_name": req.body.recipe_name,
-                        "recipe_id": req.body.recipe_id,
+                        recipe_id: ObjectId(req.body.recipe_id),
+                        username: req.body.username,
+                        comments: req.body.comments,
+                        last_updated: new Date()
                     }
                 });
             res.status(200);
@@ -226,5 +223,5 @@ main()
 
 // Route begins here
 app.listen(3001, () => {
-        console.log("server has started")
-    })
+    console.log("server has started")
+})
