@@ -110,6 +110,22 @@ async function main() {
             })
         }
     })
+    // To send back individual recipe based on the id
+    app.post("/recipes/individual", async (req,res)=>{
+        let id = req.body.recipe_id
+        try{
+            let results = await db.collection("recipes").findOne({
+                _id : ObjectId(id)
+            }) 
+            res.send(results)
+            res.status(200)
+        } catch (e) {
+            res.status(500)
+            res.send({
+                "Message": "No recipe found"
+            })
+        }
+    })
 
     // Post A Recipe URL 
     // This URL is given to selected users for them to upload recipe into the system
