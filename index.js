@@ -29,6 +29,30 @@ async function main() {
         }
     })
 
+    // To send back all comments on the recipe based on the id
+    app.post("/comments/individual", async (req,res)=>{
+        // let id = req.body.recipe_id
+        try{
+            let comments = await db.collection("comments").find({
+                recipe_id : ObjectId(req.body.recipe_id)
+            }).project(
+                {
+                    _id: 1,
+                    recipe_id: 1,
+                    username: 1,
+                    comments: 1
+                }
+            ).toArray()
+            res.send(comments)
+            res.status(200)
+        } catch (e) {
+            res.status(500)
+            res.send({
+                "Message": `No comments found`
+            })
+        }
+    })
+
     // Post - Add new comment
     app.post("/comments", async (req, res) => {
         try {
