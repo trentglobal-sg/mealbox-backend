@@ -108,13 +108,13 @@ async function main() {
             })
             res.status(200);
             res.send({
-                "Message": "Deleted request"
+                "Message": "Deleted comment"
             })
 
         } catch (e) {
             res.status(500)
             res.send({
-                "Message": "Unable to delete request"
+                "Message": "Unable to delete comment"
             })
         }
     })
@@ -176,7 +176,7 @@ async function main() {
                 }
             })
             res.status(200)
-            res.send(results)
+            res.send({"Message":"Recipe Created"})
         } catch (e) {
             res.status(500)
             res.send({
