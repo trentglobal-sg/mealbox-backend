@@ -24,7 +24,7 @@ async function main() {
         } catch (e) {
             res.status(500)
             res.send({
-                "Message": "Unable to get information"
+                "Message": "Unable to get comments"
             })
         }
     })
@@ -90,12 +90,12 @@ async function main() {
                 });
             res.status(200);
             res.send({
-                'message': 'OK'
+                'message': 'Updated Comments'
             })
         } catch (e) {
             res.status(500);
             res.send({
-                'message': "Unable to update"
+                'message': "Unable to update comments"
             })
             console.log(e);
         }
@@ -207,8 +207,6 @@ async function main() {
                         cooking_time: req.body.cooking_time,
                         preparation_time: req.body.preparation_time,
                         serving: req.body.serving,
-                        created_by: req.body.created_by,
-                        created_on: req.body.created_on,
                         resource: {
                             _id: ObjectId(req.body.resource._id),
                             img_url: req.body.resource.img_url
@@ -218,7 +216,7 @@ async function main() {
                 });
             res.status(200);
             res.send({
-                'Message': 'Recipe Updated'
+                'Message': 'Updated Recipe'
             })
         } catch (e) {
             res.status(500);
@@ -237,13 +235,13 @@ async function main() {
             })
             res.status(200);
             res.send({
-                "Message": "Deleted request"
+                "Message": "Deleted Recipe"
             })
 
         } catch (e) {
             res.status(500)
             res.send({
-                "Message": "Unable to delete request"
+                "Message": "Unable to delete recipe"
             })
         }
     })
@@ -293,7 +291,9 @@ async function main() {
                 }
             })
             res.status(200)
-            res.send(results)
+            res.send({
+                "Message": "Updated Resource"
+            })
         } catch (e) {
             res.status(500)
             res.send({
@@ -311,13 +311,13 @@ async function main() {
             })
             res.status(200);
             res.send({
-                "Message": "Deleted request"
+                "Message": "Deleted resource"
             })
 
         } catch (e) {
             res.status(500)
             res.send({
-                "Message": "Unable to delete request"
+                "Message": "Unable to delete resource"
             })
         }
     })
