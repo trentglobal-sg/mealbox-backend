@@ -82,7 +82,6 @@ async function main() {
                 },
                 {
                     '$set': {
-                        recipe_id: ObjectId(req.body.recipe_id),
                         username: req.body.username,
                         comments: req.body.comments,
                         last_updated: new Date()
