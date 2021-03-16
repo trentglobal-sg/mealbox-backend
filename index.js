@@ -187,7 +187,7 @@ async function main() {
         }
     })
 
-    // Put recipes
+    // Put - Edit recipes
     app.put("/recipes", async (req, res) => {
         try {
             await db.collection("recipes").updateOne(
@@ -268,6 +268,29 @@ async function main() {
         try {
             let results = await db.collection("resources").insertOne({
                 img_url: req.body.img_url,
+            })
+            res.status(200)
+            res.send(results)
+        } catch (e) {
+            res.status(500)
+            res.send({
+                "Message": "Unable to insert resource"
+            });
+            console.log(e)
+        }
+    })
+
+      // Put - Edit resource
+    app.put("/resources", async (req, res) => {
+        try {
+            let results = await db.collection("resources").updateOne({
+                _id: ObjectId(req.body._id)
+            },
+            {
+                "$set":{
+                    _id: ObjectId(req.body._id),
+                    img_url: req.body.img_url
+                }
             })
             res.status(200)
             res.send(results)
