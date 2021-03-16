@@ -30,11 +30,11 @@ async function main() {
     })
 
     // To send back all comments on the recipe based on the id
-    app.post("/comments/individual", async (req,res)=>{
+    app.post("/comments/individual", async (req, res) => {
         // let id = req.body.recipe_id
-        try{
+        try {
             let comments = await db.collection("comments").find({
-                recipe_id : ObjectId(req.body.recipe_id)
+                recipe_id: ObjectId(req.body.recipe_id)
             }).project(
                 {
                     _id: 1,
@@ -100,6 +100,7 @@ async function main() {
             console.log(e);
         }
     });
+
     // Delete comment
     app.delete("/comments/:id", async (req, res) => {
         try {
@@ -135,12 +136,12 @@ async function main() {
         }
     })
     // To send back individual recipe based on the id
-    app.post("/recipes/individual", async (req,res)=>{
+    app.post("/recipes/individual", async (req, res) => {
         let id = req.body.recipe_id
-        try{
+        try {
             let results = await db.collection("recipes").findOne({
-                _id : ObjectId(id)
-            }) 
+                _id: ObjectId(id)
+            })
             res.send(results)
             res.status(200)
         } catch (e) {
@@ -185,6 +186,48 @@ async function main() {
             console.log(e)
         }
     })
+
+    // Put recipes
+    app.put("/recipes", async (req, res) => {
+        try {
+            await db.collection("recipes").updateOne(
+                {
+                    _id: ObjectId(req.body.recipe_id)
+                },
+                {
+                    '$set': {
+                        _id: ObjectId(req.body.recipe_id),
+                        recipe_name: req.body.recipe_name,
+                        description: req.body.description,
+                        ingredients: req.body.ingredients,
+                        cuisine_type: req.body.cuisine_type,
+                        tags: req.body.tags,
+                        instructions: req.body.instructions,
+                        difficulty: req.body.difficulty,
+                        cooking_time: req.body.cooking_time,
+                        preparation_time: req.body.preparation_time,
+                        serving: req.body.serving,
+                        created_by: req.body.created_by,
+                        created_on: req.body.created_on,
+                        resource: {
+                            _id: ObjectId(req.body.resource._id),
+                            img_url: req.body.resource.img_url
+                        }
+
+                    }
+                });
+            res.status(200);
+            res.send({
+                'Message': 'Recipe Updated'
+            })
+        } catch (e) {
+            res.status(500);
+            res.send({
+                'Message': "Unable to update recipe"
+            })
+            console.log(e);
+        }
+    });
 
     // Delete for recipes
     app.delete("/recipes/:id", async (req, res) => {
