@@ -136,6 +136,7 @@ async function main() {
             })
         }
     })
+
     // To send back individual recipe based on the id
     app.post("/recipes/individual", async (req, res) => {
         let id = req.body.recipe_id
@@ -143,6 +144,36 @@ async function main() {
             let results = await db.collection("recipes").findOne({
                 _id: ObjectId(id)
             })
+            res.send(results)
+            res.status(200)
+        } catch (e) {
+            res.status(500)
+            res.send({
+                "Message": "No recipe found"
+            })
+        }
+    })
+
+    // To send back recipe based on search
+    app.post("/recipes/search", async (req, res) => {
+        let criteria={};
+        if (req.body.search_field){
+            criteria["recipe_name"] = {
+                     $regex: req.body.search_field, $options:"i"
+            }
+        }
+        if (req.body.difficulty){
+            criteria["difficulty"] = {
+                     $in : [req.body.difficulty]
+            }
+        }
+        if (req.body.cuisine_type){
+            criteria["cuisine_type"] = {
+                     $in : [req.body.cuisine_type]
+            }
+        }
+        try {
+            let results = await db.collection("recipes").find(criteria).toArray()
             res.send(results)
             res.status(200)
         } catch (e) {
