@@ -157,9 +157,9 @@ async function main() {
     // To send back recipe based on search
     app.post("/recipes/search", async (req, res) => {
         let criteria={};
-        if (req.body.search_field){
+        if (req.body.recipe_name){
             criteria["recipe_name"] = {
-                     $regex: req.body.search_field, $options:"i"
+                     $regex: req.body.recipe_name, $options:"i"
             }
         }
         if (req.body.difficulty){
