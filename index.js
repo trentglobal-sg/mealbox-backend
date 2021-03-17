@@ -63,7 +63,9 @@ async function main() {
                 last_updated: new Date()
             })
             res.status(200)
-            res.send(results)
+            res.send({
+                "Message": "Comments Inserted"
+            })
         } catch (e) {
             res.status(500)
             res.send({
