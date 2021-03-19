@@ -53,6 +53,28 @@ async function main() {
         }
     })
 
+     // To send back comment based on search
+    app.post("/comments/:recipe_id/search", async (req, res) => {
+        let criteria={
+            recipe_id: ObjectId(req.params.recipe_id)
+        };
+        if (req.body.search_query){
+            criteria["comments"] = {
+                     $regex: req.body.search_query, $options:"i"
+            }
+        }
+        try {
+            let results = await db.collection("comments").find(criteria).toArray()
+            res.send(results)
+            res.status(200)
+        } catch (e) {
+            res.status(500)
+            res.send({
+                "Message": "No recipe found"
+            })
+        }
+    })
+
     // Post - Add new comment
     app.post("/comments", async (req, res) => {
         try {
