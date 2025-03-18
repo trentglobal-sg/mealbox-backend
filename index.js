@@ -33,11 +33,11 @@ async function main() {
     })
 
     // To send back all comments on the recipe based on the id
-    app.post("/comments/individual", async (req, res) => {
-        // let id = req.body.recipe_id
+    app.get("/recipes/:id/comments", async (req, res) => {
+        let id = req.params.id;
         try {
             let comments = await db.collection("comments").find({
-                recipe_id: ObjectId(req.body.recipe_id)
+                recipe_id: ObjectId(id)
             }).project(
                 {
                     _id: 1,

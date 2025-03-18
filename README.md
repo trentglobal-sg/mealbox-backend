@@ -14,7 +14,7 @@ User's Goal: To create, search, read and comment on the recipes. To buy necessar
 Site owner's goal: To showcase proficiency in the mentioned programming language.
 
 ## Access
-Url to live site:  https://happy-albattani-303d99.netlify.app/
+Url to API: https://mealbox-backend.onrender.com/
 
 
 ### More Information
