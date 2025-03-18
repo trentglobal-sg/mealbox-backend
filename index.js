@@ -10,9 +10,12 @@ app.use(express.json());
 app.use(cors());
 // Setup end
 
-
 async function main() {
     let db = await MongoUtil.connect(mongoUrl, process.env.DB_NAME)
+
+    app.get("/", (req, res) => {
+        res.send("Hello World")
+    });
 
     // For "comments" collection
     // Get - Fetch comment
@@ -54,7 +57,7 @@ async function main() {
     })
 
      // To send back comment based on search
-    app.post("/comments/:recipe_id/search", async (req, res) => {
+    app.get("/comments/:recipe_id/search", async (req, res) => {
         let criteria={
             recipe_id: ObjectId(req.params.recipe_id)
         };
@@ -159,13 +162,29 @@ async function main() {
         }
     })
 
-    // To send back individual recipe based on the id
-    app.post("/recipes/individual", async (req, res) => {
-        let id = req.body.recipe_id
+  
+
+    // To send back recipe based on search
+    app.get("/recipes/search", async (req, res) => {
+        let criteria={};
+        if (req.query.recipe_name){
+            criteria["recipe_name"] = {
+                     $regex: req.query.recipe_name, $options:"i"
+            }
+        }
+        if (req.query.difficulty){
+            criteria["difficulty"] = {
+                     $in : [req.query.difficulty]
+            }
+        }
+        if (req.query.cuisine_type){
+            criteria["cuisine_type"] = {
+                     $in : [req.query.cuisine_type]
+            }
+        }
+
         try {
-            let results = await db.collection("recipes").findOne({
-                _id: ObjectId(id)
-            })
+            let results = await db.collection("recipes").find(criteria).toArray()
             res.send(results)
             res.status(200)
         } catch (e) {
@@ -176,26 +195,13 @@ async function main() {
         }
     })
 
-    // To send back recipe based on search
-    app.post("/recipes/search", async (req, res) => {
-        let criteria={};
-        if (req.body.recipe_name){
-            criteria["recipe_name"] = {
-                     $regex: req.body.recipe_name, $options:"i"
-            }
-        }
-        if (req.body.difficulty){
-            criteria["difficulty"] = {
-                     $in : [req.body.difficulty]
-            }
-        }
-        if (req.body.cuisine_type){
-            criteria["cuisine_type"] = {
-                     $in : [req.body.cuisine_type]
-            }
-        }
+      // To send back individual recipe based on the id
+      app.get("/recipes/:id", async (req, res) => {
+        let id = req.params.id;
         try {
-            let results = await db.collection("recipes").find(criteria).toArray()
+            let results = await db.collection("recipes").findOne({
+                _id: ObjectId(id)
+            })
             res.send(results)
             res.status(200)
         } catch (e) {

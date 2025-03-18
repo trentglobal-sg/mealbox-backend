@@ -1,11 +1,18 @@
 {
+  "name": "mealbox-backend",
+  "version": "1.0.0",
+  "description": "# **MealBox** ## Context This project aims to create an interactive web application using React and creating my own RESTful API using Mongo and Express.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "mongodb": "^3.6.4"
-  },
-  "scripts": {
-      "start": "node index.js"
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongodb": "^6.14.2"
   }
 }

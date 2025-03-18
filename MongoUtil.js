@@ -3,9 +3,7 @@ const mongoClient = require("mongodb").MongoClient;
 
 async function connect(mongoUrl, dbName) {
     //Create a client
-    let client = await mongoClient.connect(mongoUrl, {
-        useUnifiedTopology: true
-    })
+    let client = await mongoClient.connect(mongoUrl);
 
     //Use a database
     let db = client.db(dbName);
