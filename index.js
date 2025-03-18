@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors")
 require("dotenv").config();
 const MongoUtil = require("./MongoUtil");
-const mongoUrl = process.env.MONGO_URL;
+const mongoUrl = process.env.MONGO_URI;
 const ObjectId = require("mongodb").ObjectId;
 let app = express();
 app.use(express.json());
@@ -12,7 +12,7 @@ app.use(cors());
 
 
 async function main() {
-    let db = await MongoUtil.connect(mongoUrl, "tgc-11")
+    let db = await MongoUtil.connect(mongoUrl, process.env.DB_NAME)
 
     // For "comments" collection
     // Get - Fetch comment
