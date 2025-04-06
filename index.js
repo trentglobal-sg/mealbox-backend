@@ -37,7 +37,7 @@ async function main() {
         let id = req.params.id;
         try {
             let comments = await db.collection("comments").find({
-                recipe_id: ObjectId(id)
+                recipe_id: new ObjectId(id)
             }).project(
                 {
                     _id: 1,
@@ -49,6 +49,7 @@ async function main() {
             res.send(comments)
             res.status(200)
         } catch (e) {
+            console.error(e);
             res.status(500)
             res.send({
                 "Message": `No comments found`
@@ -59,7 +60,7 @@ async function main() {
      // To send back comment based on search
     app.get("/comments/:recipe_id/search", async (req, res) => {
         let criteria={
-            recipe_id: ObjectId(req.params.recipe_id)
+            recipe_id: new ObjectId(req.params.recipe_id)
         };
         if (req.body.search_query){
             criteria["comments"] = {
@@ -71,6 +72,7 @@ async function main() {
             res.send(results)
             res.status(200)
         } catch (e) {
+            console.error(e);
             res.status(500)
             res.send({
                 "Message": "No recipe found"
@@ -82,7 +84,7 @@ async function main() {
     app.post("/comments", async (req, res) => {
         try {
             let results = await db.collection("comments").insertOne({
-                recipe_id: ObjectId(req.body.recipe_id),
+                recipe_id: new ObjectId(req.body.recipe_id),
                 username: req.body.username,
                 comments: req.body.comments,
                 last_updated: new Date()
@@ -166,6 +168,7 @@ async function main() {
 
     // To send back recipe based on search
     app.get("/recipes/search", async (req, res) => {
+    
         let criteria={};
         if (req.query.recipe_name){
             criteria["recipe_name"] = {
@@ -197,14 +200,16 @@ async function main() {
 
       // To send back individual recipe based on the id
       app.get("/recipes/:id", async (req, res) => {
+
         let id = req.params.id;
         try {
             let results = await db.collection("recipes").findOne({
-                _id: ObjectId(id)
+                _id: new ObjectId(id)
             })
             res.send(results)
             res.status(200)
         } catch (e) {
+            console.error(e);
             res.status(500)
             res.send({
                 "Message": "No recipe found"
@@ -232,7 +237,7 @@ async function main() {
                 created_by: req.body.created_by,
                 created_on: new Date(),
                 resource: {
-                    _id: ObjectId(req.body.resource._id),
+                    _id: new ObjectId(req.body.resource._id),
                     img_url: req.body.resource.img_url
                 }
             })
@@ -252,11 +257,10 @@ async function main() {
         try {
             await db.collection("recipes").updateOne(
                 {
-                    _id: ObjectId(req.body.recipe_id)
+                    _id: new ObjectId(req.body.recipe_id)
                 },
                 {
                     '$set': {
-                        _id: ObjectId(req.body.recipe_id),
                         recipe_name: req.body.recipe_name,
                         description: req.body.description,
                         ingredients: req.body.ingredients,
@@ -268,7 +272,7 @@ async function main() {
                         preparation_time: req.body.preparation_time,
                         serving: req.body.serving,
                         resource: {
-                            _id: ObjectId(req.body.resource._id),
+                            _id: new ObjectId(req.body.resource._id),
                             img_url: req.body.resource.img_url
                         }
 
@@ -291,7 +295,7 @@ async function main() {
     app.delete("/recipes/:id", async (req, res) => {
         try {
             await db.collection("recipes").deleteOne({
-                _id: ObjectId(req.params.id)
+                _id: new ObjectId(req.params.id)
             })
             res.status(200);
             res.send({
@@ -339,14 +343,14 @@ async function main() {
     })
 
       // Put - Edit resource
-    app.put("/resources", async (req, res) => {
+    app.put("/resources/:id", async (req, res) => {
         try {
             let results = await db.collection("resources").updateOne({
-                _id: ObjectId(req.body._id)
+                _id: new ObjectId(req.params.id)
             },
             {
                 "$set":{
-                    _id: ObjectId(req.body._id),
+                    _id: new ObjectId(req.params.id),
                     img_url: req.body.img_url
                 }
             })
@@ -367,7 +371,7 @@ async function main() {
     app.delete("/resources/:id", async (req, res) => {
         try {
             await db.collection("resources").deleteOne({
-                _id: ObjectId(req.params.id)
+                _id:  new ObjectId(req.params.id)
             })
             res.status(200);
             res.send({
